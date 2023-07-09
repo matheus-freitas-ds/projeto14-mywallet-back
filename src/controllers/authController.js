@@ -1,17 +1,9 @@
 import bcrypt from "bcrypt"
 import { v4 as uuid } from "uuid"
 import { db } from "../database/databaseConnection.js"
-import { userSchema, loginSchema } from "../schemas/userSchema.js"
 
 export async function signup(req, res) {
     const { name, email, password } = req.body
-
-    const validation = userSchema.validate(req.body, { abortEarly: false })
-
-    if (validation.error) {
-        const errors = validation.error.details.map((detail) => detail.message)
-        return res.status(422).send(errors)
-    }
 
     try {
         const user = await db.collection("users").findOne({ email })
@@ -28,13 +20,6 @@ export async function signup(req, res) {
 
 export async function signin(req, res) {
     const { email, password } = req.body
-
-    const validation = loginSchema.validate(req.body, { abortEarly: false })
-
-    if (validation.error) {
-        const errors = validation.error.details.map((detail) => detail.message)
-        return res.status(422).send(errors)
-    }
 
     try {
         const user = await db.collection('users').findOne({ email })
