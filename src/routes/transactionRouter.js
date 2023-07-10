@@ -1,5 +1,5 @@
 import { Router } from "express"
-import { newTransaction } from "../controllers/transactionController.js"
+import { newTransaction, showTransactions } from "../controllers/transactionController.js"
 import { validateAuth } from "../middlewares/validateAuth.js"
 import { validateSchema } from "../middlewares/validateSchema.js"
 import { transactionSchema } from "../schemas/transactionSchema.js"
@@ -7,6 +7,7 @@ import { transactionSchema } from "../schemas/transactionSchema.js"
 const transactionRouter = Router()
 transactionRouter.use(validateAuth)
 
-userRouter.post("/nova-transacao", validateSchema(transactionSchema), newTransaction)
+transactionRouter.post("/nova-transacao", validateSchema(transactionSchema), newTransaction)
+transactionRouter.get("/home", showTransactions)
 
 export default transactionRouter
