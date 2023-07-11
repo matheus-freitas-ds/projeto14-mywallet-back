@@ -1,4 +1,4 @@
-import { db } from "../database/databaseConnection"
+import { db } from "../database/databaseConnection.js"
 
 export async function validateAuth(req, res, next) {
     const { authorization } = req.headers
@@ -9,6 +9,8 @@ export async function validateAuth(req, res, next) {
     try {
         const session = await db.collection("sessions").findOne({ token })
         if (!session) return res.sendStatus(401)
+
+        res.locals.session = session
 
         next()
     } catch (err) {

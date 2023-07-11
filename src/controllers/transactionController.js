@@ -2,10 +2,10 @@ import { db } from "../database/databaseConnection.js"
 
 export async function newTransaction(req, res) {
     const { value, description, type } = req.body
+    const { userId } = res.locals.session
 
     try {
-        const transaction = { value: Number(value), description, type, time: Date.now() }
-        await db.collection("transactions").insertOne("transaction")
+        await db.collection("transactions").insertOne({ value: Number(value), description, type, userId })
         res.sendStatus(201)
     } catch (err) {
         res.status(500).send(err.message)
@@ -20,4 +20,4 @@ export async function showTransactions(req, res) {
     } catch (err) {
         res.status(500).send(err.message)
     }
-}
+} 
